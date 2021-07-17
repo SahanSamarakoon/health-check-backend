@@ -10,9 +10,9 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(cors());
 app.use(bodyParser.json());
- mongoose.connect(
+mongoose.connect(
     process.env.DB_CONNECT,
-    { useNewUrlParser: true, useUnifiedTopology: true },
+    {useNewUrlParser: true, useUnifiedTopology: true},
     (err) => {
         if (err) {
             console.log(err);
@@ -22,7 +22,7 @@ app.use(bodyParser.json());
     }
 );
 
-app.use("/api/v1",require("./routes/mainRoutes") );
+app.use("/api/v1", require("./routes/mainRoutes"));
 
 app.listen(PORT, () => console.log("Server is running"))
 

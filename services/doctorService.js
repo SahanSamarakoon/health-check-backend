@@ -3,6 +3,7 @@ const {compareSync} = require("bcrypt");
 const {sign} = require("jsonwebtoken");
 const Doctor = require("../schemas/doctor.schema");
 const Timeslot = require("../schemas/timeslot.schema");
+const Appointment = require("../schemas/appointment.schema");
 
 
 module.exports = {
@@ -65,13 +66,26 @@ module.exports = {
 
 
     },
-    getDoctorDetails:async(id)=>{
-        const result =await Doctor.findById(id);
+    getDoctorDetails: async (id) => {
+        const result = await Doctor.findById(id);
         result.password = undefined;
-        if (!result){
+        if (!result) {
             throw new Error("Doctor not found")
         }
         return result;
+    },
+    getAppointments: async (id) => {
+        const result = await Appointment.find({doctorId: id}).populate(["timeslotId","patientId","doctorId"]);
+        const currentDate = moment().toDate();
+        const updatedAppointments = [];
+        result.forEach((appointment) => {
+            if (moment(appointment.timeslotId.startTime).isAfter(currentDate)) {
+                appointment.doctorId.password = undefined;
+                appointment.patientId.password = undefined;
+                updatedAppointments.push(appointment);
+            }
+        });
+        return updatedAppointments;
     }
 
 }

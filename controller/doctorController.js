@@ -1,12 +1,19 @@
 const Joi = require("joi");
-const {loginDoctor, createTimeslot, getDoctors, getDoctorSlots,getDoctorDetails} = require("../services/doctorService")
+const {
+    loginDoctor,
+    createTimeslot,
+    getDoctors,
+    getDoctorSlots,
+    getDoctorDetails,
+    getAppointments
+} = require("../services/doctorService")
 
 module.exports = {
     loginDoctor: async (req, res) => {
         const schema = Joi.object({
             email: Joi.string().email().required(),
             password: Joi.string().min(6).max(25).required(),
-            type:Joi.string().allow("")
+            type: Joi.string().allow("")
         });
         const validation = schema.validate(req.body);
         if (validation.error) {
@@ -71,7 +78,7 @@ module.exports = {
             res.status(error.status || 401).send({message: error.message});
         }
     },
-    getDetails:async(req,res)=>{
+    getDetails: async (req, res) => {
         const id = req.user._id;
         if (!id) {
             res.status(401).send({message: "Invalid id"});
@@ -79,6 +86,15 @@ module.exports = {
         }
         try {
             const result = await getDoctorDetails(id);
+            res.status(201).send({success: 1, result});
+        } catch (error) {
+            res.status(error.status || 401).send({message: error.message});
+        }
+    },
+    getAppointments: async (req, res) => {
+        const id = req.user._id;
+        try {
+            const result = await getAppointments(id);
             res.status(201).send({success: 1, result});
         } catch (error) {
             res.status(error.status || 401).send({message: error.message});

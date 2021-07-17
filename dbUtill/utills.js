@@ -1,4 +1,4 @@
-module.exports={
+module.exports = {
 
-        DOCTOR : "doctors", PATIENT : "patients",TIMESLOT:"timeslots",APPOINTMENT:"appointments",
+    DOCTOR: "doctors", PATIENT: "patients", TIMESLOT: "timeslots", APPOINTMENT: "appointments",
 }

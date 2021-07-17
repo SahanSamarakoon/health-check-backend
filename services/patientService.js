@@ -36,7 +36,7 @@ module.exports = {
                 const {_id, name, email, dob, history} = user
                 const loggedUser = {
                     token: jsontoken,
-                    user: {_id, name, email, dob, history,type:"patient"}
+                    user: {_id, name, email, dob, history, type: "patient"}
                 };
                 return loggedUser;
 
@@ -48,18 +48,30 @@ module.exports = {
         }
 
     },
-    makeAppointment:async(patientId,data)=>{
+    makeAppointment: async (patientId, data) => {
         const availability = await Timeslot.findById(data.timeslotId);
-        if (availability.availability){
-            const result = await Appointment.create({patientId,doctorId:data.doctorId,timeslotId:data.timeslotId});
+        if (availability.availability) {
+            const result = await Appointment.create({patientId, doctorId: data.doctorId, timeslotId: data.timeslotId});
             await Timeslot.findOneAndUpdate(data.timeslotId
-                ,{availability:false});
+                , {availability: false});
             return result;
-        }
-        else{
+        } else {
             throw new Error("Timeslot is unavailable");
         }
 
+    },
+    getAppointments: async (id) => {
+        const result = await Appointment.find({patientId: id}).populate(["timeslotId","patientId","doctorId"]);
+        const currentDate = moment().toDate();
+        const updatedAppointments = [];
+        result.forEach((appointment) => {
+            if (moment(appointment.timeslotId.startTime).isAfter(currentDate)) {
+                appointment.doctorId.password = undefined;
+                appointment.patientId.password = undefined;
+                updatedAppointments.push(appointment);
+            }
+        });
+        return updatedAppointments;
     }
 
 }

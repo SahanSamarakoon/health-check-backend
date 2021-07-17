@@ -1,5 +1,5 @@
 const Joi = require("joi");
-const {saveUser, loginPatient,makeAppointment} = require("../services/patientService")
+const {saveUser, loginPatient, makeAppointment,getAppointments} = require("../services/patientService")
 
 module.exports = {
     registerUser: async (req, res) => {
@@ -19,7 +19,7 @@ module.exports = {
         try {
             const result = await saveUser(data);
             result.password = undefined;
-            res.status(201).send({success:1,result});
+            res.status(201).send({success: 1, result});
         } catch (error) {
             res.status(error.code || 409).send({message: error.message});
         }
@@ -29,7 +29,7 @@ module.exports = {
         const schema = Joi.object({
             email: Joi.string().email().required(),
             password: Joi.string().min(6).max(25).required(),
-            type:Joi.string().allow("")
+            type: Joi.string().allow("")
         });
         const validation = schema.validate(req.body);
         if (validation.error) {
@@ -48,14 +48,14 @@ module.exports = {
             });
 
         } catch (error) {
-            res.status(error.code||401).send({message: error.message});
+            res.status(error.code || 401).send({message: error.message});
         }
     },
-    addAppointment:async(req,res)=>{
+    addAppointment: async (req, res) => {
         const schema = Joi.object({
             doctorId: Joi.string().required(),
             timeslotId: Joi.string().required(),
-            state:Joi.string().default("booked")
+            state: Joi.string().default("booked")
         });
         const validation = schema.validate(req.body);
         if (validation.error) {
@@ -64,11 +64,20 @@ module.exports = {
         }
         const patientId = req.user._id;
         const body = validation.value;
-        try{
-            const result = await makeAppointment(patientId,body);
-            res.status(201).send({success:1,result});
-        }catch (error){
-            res.status(error.code||401).send({message: error.message});
+        try {
+            const result = await makeAppointment(patientId, body);
+            res.status(201).send({success: 1, result});
+        } catch (error) {
+            res.status(error.code || 401).send({message: error.message});
+        }
+    },
+    getAppointments: async (req, res) => {
+        const id = req.user._id;
+        try {
+            const result = await getAppointments(id);
+            res.status(201).send({success: 1, result});
+        } catch (error) {
+            res.status(error.status || 401).send({message: error.message});
         }
     }
 }

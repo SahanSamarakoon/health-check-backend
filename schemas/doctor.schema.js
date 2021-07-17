@@ -11,7 +11,7 @@ const doctorSchema = new mongoose.Schema({
         type: String,
         required: true,
         max: 255,
-        unique:true
+        unique: true
     },
     password: {
         type: String,
@@ -19,14 +19,14 @@ const doctorSchema = new mongoose.Schema({
         max: 1024,
         min: 6,
     },
-    field:{
-        type:String,
-        required:true,
+    field: {
+        type: String,
+        required: true,
     },
-    dob:{
-        type:Date,
-        required:true
+    dob: {
+        type: Date,
+        required: true
     }
-},{timestamps:true});
+}, {timestamps: true});
 
 module.exports = mongoose.model(dbUtill.DOCTOR, doctorSchema);

@@ -14,12 +14,12 @@ const appointmentSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: dbUtill.TIMESLOT,
     },
-    state:{
-        type:String,
-        default:"booked",
-        required:true,
+    state: {
+        type: String,
+        default: "booked",
+        required: true,
     },
 
-},{timestamps:true});
+}, {timestamps: true});
 
 module.exports = mongoose.model(dbUtill.APPOINTMENT, appointmentSchema);

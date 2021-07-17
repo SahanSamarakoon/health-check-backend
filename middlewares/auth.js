@@ -1,4 +1,4 @@
-const { verify } = require("jsonwebtoken");
+const {verify} = require("jsonwebtoken");
 
 module.exports = {
     checkToken: (req, res, next) => {
@@ -7,7 +7,7 @@ module.exports = {
             token = token.slice(7);
             verify(token, "secret", (error, decoded) => {
                 if (error) {
-                    res.status(error.code).send({message:error.message});
+                    res.status(error.code).send({message: error.message});
                 } else {
                     req.user = decoded.result;
                     delete req.user.password
@@ -15,7 +15,7 @@ module.exports = {
                 }
             });
         } else {
-            res.status(403).send({message:"Access denied ! No token"});
+            res.status(403).send({message: "Access denied ! No token"});
         }
     }
 };

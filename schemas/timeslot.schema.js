@@ -8,18 +8,18 @@ const timeslotSchema = new mongoose.Schema({
     },
     startTime: {
         type: Date,
-        required:true
+        required: true
     },
     endTime: {
         type: Date,
-        required:true
+        required: true
     },
-    availability:{
-        type:Boolean,
-        default:true,
-        required:true,
+    availability: {
+        type: Boolean,
+        default: true,
+        required: true,
     },
 
-},{timestamps:true});
+}, {timestamps: true});
 
 module.exports = mongoose.model(dbUtill.TIMESLOT, timeslotSchema);
