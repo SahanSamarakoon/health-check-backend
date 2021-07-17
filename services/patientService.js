@@ -1,6 +1,8 @@
 const {genSaltSync, hashSync, compareSync} = require("bcrypt");
 const {sign} = require("jsonwebtoken");
 const Patient = require("../schemas/patient.schema");
+const Appointment = require("../schemas/appointment.schema");
+const Timeslot = require("../schemas/timeslot.schema");
 const moment = require("moment");
 
 
@@ -46,5 +48,18 @@ module.exports = {
         }
 
     },
+    makeAppointment:async(patientId,data)=>{
+        const availability = await Timeslot.findById(data.timeslotId);
+        if (availability.availability){
+            const result = await Appointment.create({patientId,doctorId:data.doctorId,timeslotId:data.timeslotId});
+            await Timeslot.findOneAndUpdate(data.timeslotId
+                ,{availability:false});
+            return result;
+        }
+        else{
+            throw new Error("Timeslot is unavailable");
+        }
+
+    }
 
 }

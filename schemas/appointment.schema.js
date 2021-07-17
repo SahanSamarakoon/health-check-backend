@@ -22,4 +22,4 @@ const appointmentSchema = new mongoose.Schema({
 
 },{timestamps:true});
 
-module.exports = mongoose.model(dbUtill.PATIENT, appointmentSchema);
+module.exports = mongoose.model(dbUtill.APPOINTMENT, appointmentSchema);

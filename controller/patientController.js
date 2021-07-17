@@ -1,5 +1,5 @@
 const Joi = require("joi");
-const {saveUser, loginPatient} = require("../services/patientService")
+const {saveUser, loginPatient,makeAppointment} = require("../services/patientService")
 
 module.exports = {
     registerUser: async (req, res) => {
@@ -47,8 +47,27 @@ module.exports = {
             });
 
         } catch (error) {
-            console.log(error);
             res.status(error.code||401).send({message: error.message});
         }
     },
+    addAppointment:async(req,res)=>{
+        const schema = Joi.object({
+            doctorId: Joi.string().required(),
+            timeslotId: Joi.string().required(),
+            state:Joi.string().default("booked")
+        });
+        const validation = schema.validate(req.body);
+        if (validation.error) {
+            res.status(401).send({message: validation.error.message});
+            return;
+        }
+        const patientId = req.user._id;
+        const body = validation.value;
+        try{
+            const result = await makeAppointment(patientId,body);
+            res.status(201).send({success:1,result});
+        }catch (error){
+            res.status(error.code||401).send({message: error.message});
+        }
+    }
 }

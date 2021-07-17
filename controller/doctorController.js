@@ -1,5 +1,5 @@
 const Joi = require("joi");
-const { loginDoctor} = require("../services/doctorService")
+const { loginDoctor,createTimeslot} = require("../services/doctorService")
 
 module.exports = {
     loginDoctor: async (req, res) => {
@@ -27,4 +27,25 @@ module.exports = {
             res.status(error.code||401).send({message: error.message});
         }
     },
+
+    addTimeslot:async(req,res)=>{
+        const schema = Joi.object({
+            startTime: Joi.date().required(),
+            endTime:Joi.date().required(),
+            availability:Joi.boolean().default(true)
+        });
+        const validation = schema.validate(req.body);
+        if (validation.error) {
+            res.status(401).send({message: validation.error.message});
+            return;
+        }
+        const doctorId = req.params.id;
+        const body = validation.value;
+        try{
+            await createTimeslot(doctorId,body);
+            res.status(201).send({success:1});
+        }catch(error){
+            res.status(error.code||401).send({message: error.message});
+        }
+    }
 }

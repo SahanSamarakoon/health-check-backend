@@ -8,6 +8,10 @@ const auth = require("../middlewares/auth");
 patientRouter.post("/register",patientController.registerUser);
 patientRouter.post("/login",patientController.loginUser);
 
+//make an appointment
+patientRouter.post("/appointment",auth.checkToken,patientController.addAppointment);
+
+
 
 
 module.exports = patientRouter;

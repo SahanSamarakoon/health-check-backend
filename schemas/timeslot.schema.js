@@ -1,16 +1,16 @@
 const mongoose = require("mongoose");
 const dbUtill = require("../dbUtill/utills");
 
-const appointmentSchema = new mongoose.Schema({
+const timeslotSchema = new mongoose.Schema({
     doctorId: {
         type: mongoose.Types.ObjectId,
         ref: dbUtill.DOCTOR,
     },
-    time: {
+    startTime: {
         type: Date,
         required:true
     },
-    date: {
+    endTime: {
         type: Date,
         required:true
     },
@@ -22,4 +22,4 @@ const appointmentSchema = new mongoose.Schema({
 
 },{timestamps:true});
 
-module.exports = mongoose.model(dbUtill.PATIENT, appointmentSchema);
+module.exports = mongoose.model(dbUtill.TIMESLOT, timeslotSchema);

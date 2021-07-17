@@ -1,6 +1,7 @@
 const { compareSync} = require("bcrypt");
 const {sign} = require("jsonwebtoken");
 const Doctor = require("../schemas/doctor.schema");
+const Timeslot = require("../schemas/timeslot.schema");
 
 
 module.exports = {
@@ -30,5 +31,8 @@ module.exports = {
         }
 
     },
+    createTimeslot:async(doctorId,data)=>{
+        await Timeslot.create({doctorId,startTime:data.startTime,endTime:data.endTime});
+    }
 
 }
