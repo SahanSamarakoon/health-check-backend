@@ -9,7 +9,6 @@ module.exports = {
             password: Joi.string().min(6).max(25).required(),
             history: Joi.string().allow(""),
             dob: Joi.date(),
-            type:Joi.string().allow("")
         });
         const validation = schema.validate(req.body);
         if (validation.error) {
@@ -29,7 +28,8 @@ module.exports = {
     loginUser: async (req, res) => {
         const schema = Joi.object({
             email: Joi.string().email().required(),
-            password: Joi.string().min(6).max(25).required()
+            password: Joi.string().min(6).max(25).required(),
+            type:Joi.string().allow("")
         });
         const validation = schema.validate(req.body);
         if (validation.error) {
