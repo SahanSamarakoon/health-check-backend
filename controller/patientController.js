@@ -8,7 +8,8 @@ module.exports = {
             email: Joi.string().email().required(),
             password: Joi.string().min(6).max(25).required(),
             history: Joi.string().allow(""),
-            dob: Joi.date()
+            dob: Joi.date(),
+            type:Joi.string().allow("")
         });
         const validation = schema.validate(req.body);
         if (validation.error) {

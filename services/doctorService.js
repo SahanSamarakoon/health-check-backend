@@ -1,5 +1,5 @@
 const moment = require("moment");
-const { compareSync} = require("bcrypt");
+const {compareSync} = require("bcrypt");
 const {sign} = require("jsonwebtoken");
 const Doctor = require("../schemas/doctor.schema");
 const Timeslot = require("../schemas/timeslot.schema");
@@ -20,7 +20,7 @@ module.exports = {
                 const {_id, name, email, dob, field} = user
                 const loggedUser = {
                     token: jsontoken,
-                    user: {_id, name, email, dob, field,type:"doctor"}
+                    user: {_id, name, email, dob, field, type: "doctor"}
                 };
                 return loggedUser;
 
@@ -32,38 +32,46 @@ module.exports = {
         }
 
     },
-    createTimeslot:async(doctorId,data)=>{
-        await Timeslot.create({doctorId,startTime:data.startTime,endTime:data.endTime});
+    createTimeslot: async (doctorId, data) => {
+        await Timeslot.create({doctorId, startTime: data.startTime, endTime: data.endTime});
     },
-    getDoctors:async(filter)=>{
-        const updatedFilter = filter.map((f)=>{
-            return {field:f}
+    getDoctors: async (filter) => {
+        const updatedFilter = filter.map((f) => {
+            return {field: f}
         });
-        const result = await Doctor.find({$or:updatedFilter}).select(["name","email","field","dob"]);
+        const result = await Doctor.find({$or: updatedFilter}).select(["name", "email", "field", "dob"]);
         return result;
     },
-    getDoctorSlots:async(id)=>{
+    getDoctorSlots: async (id) => {
         const currentDate = moment().toDate();
-        const result = await Timeslot.find({doctorId:id,startTime:{$gte:currentDate}});
+        const result = await Timeslot.find({doctorId: id, startTime: {$gte: currentDate}});
         const map = new Map();
-        result.forEach((slot)=>{
+        result.forEach((slot) => {
             const date = `${slot.startTime.getFullYear()}-${slot.startTime.getMonth()}-${slot.startTime.getDate()}`;
-            if (!map.get(date)){
-                map.set(date,[]);
-                map.get(date).push({startTime:slot.startTime,endTime:slot.endTime});
-            }else{
-                map.get(date).push({startTime:slot.startTime,endTime:slot.endTime});
+            if (!map.get(date)) {
+                map.set(date, []);
+                map.get(date).push({startTime: slot.startTime, endTime: slot.endTime});
+            } else {
+                map.get(date).push({startTime: slot.startTime, endTime: slot.endTime});
             }
 
         });
         const timeslots = {};
-        map.forEach((slot)=>{
+        map.forEach((slot) => {
             const date = `${slot[0].startTime.getFullYear()}-${slot[0].startTime.getMonth()}-${slot[0].startTime.getDate()}`;
             timeslots[date] = slot;
         });
         return timeslots;
 
 
+    },
+    getDoctorDetails:async(id)=>{
+        const result =await Doctor.findById(id);
+        result.password = undefined;
+        if (!result){
+            throw new Error("Doctor not found")
+        }
+        return result;
     }
 
 }
