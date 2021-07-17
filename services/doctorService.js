@@ -1,3 +1,4 @@
+const moment = require("moment");
 const { compareSync} = require("bcrypt");
 const {sign} = require("jsonwebtoken");
 const Doctor = require("../schemas/doctor.schema");
@@ -33,6 +34,31 @@ module.exports = {
     },
     createTimeslot:async(doctorId,data)=>{
         await Timeslot.create({doctorId,startTime:data.startTime,endTime:data.endTime});
+    },
+    getDoctors:async(filter)=>{
+        const updatedFilter = filter.map((f)=>{
+            return {field:f}
+        });
+        const result = await Doctor.find({$or:updatedFilter}).select(["name","email","field","dob"]);
+        return result;
+    },
+    getDoctorSlots:async(id)=>{
+        const currentDate = moment().toDate();
+        const result = await Timeslot.find({doctorId:id,startTime:{$gte:currentDate}});
+        const timeslots = new Map();
+        result.forEach((slot)=>{
+            const date = `${slot.startTime.getFullYear()}-${slot.startTime.getMonth()}-${slot.startTime.getDate()}`;
+            if (!timeslots.get(date)){
+                timeslots.set(date,[]);
+                timeslots.get(date).push({startTime:slot.startTime,endTime:slot.endTime});
+            }else{
+                timeslots.get(date).push({startTime:slot.startTime,endTime:slot.endTime});
+            }
+
+        });
+        return timeslots;
+
+
     }
 
 }

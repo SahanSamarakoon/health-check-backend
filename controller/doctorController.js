@@ -1,5 +1,5 @@
 const Joi = require("joi");
-const { loginDoctor,createTimeslot} = require("../services/doctorService")
+const { loginDoctor,createTimeslot,getDoctors,getDoctorSlots} = require("../services/doctorService")
 
 module.exports = {
     loginDoctor: async (req, res) => {
@@ -47,5 +47,26 @@ module.exports = {
         }catch(error){
             res.status(error.code||401).send({message: error.message});
         }
-    }
+    },
+    getAllDoctors:async(req,res)=>{
+        try{
+            const filter = req.query.filter;
+            const result = await getDoctors(filter);
+            res.status(201).send({success:1,result});
+        }catch(error){
+            res.status(error.status||401).send({message:error.message});
+        }
+    },
+    getDoctorSlots:async(req,res)=>{
+        const id = req.params.id;
+            if (!id){
+                res.status(401).send({message:"Invalid id"})
+            }
+            try{
+                const result =  await getDoctorSlots(id);
+                res.status(201).send({success:1,result});
+            }catch(error){
+                res.status(error.status||401).send(error.message);
+            }
+}
 }

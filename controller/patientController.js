@@ -19,7 +19,7 @@ module.exports = {
         try {
             const result = await saveUser(data);
             result.password = undefined;
-            res.status(201).send({result});
+            res.status(201).send({success:1,result});
         } catch (error) {
             res.status(error.code || 409).send({message: error.message});
         }
@@ -41,7 +41,7 @@ module.exports = {
             const {user, token} = await loginPatient(body);
 
             return res.status(200).json({
-                sucess: 1,
+                success: 1,
                 message: "login Sucess",
                 token, user
             });
