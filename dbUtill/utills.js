@@ -1,4 +1,4 @@
 module.exports={
 
-        DOCTOR : "doctors", PATIENT : "patients",
+        DOCTOR : "doctors", PATIENT : "patients",TIMESLOT:"timeslots",APPOINTMENT:"appointments",
 }

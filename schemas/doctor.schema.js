@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const dbUtill = require("../dbUtill/utills");
 
-const patientSchema = new mongoose.Schema({
+const doctorSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -19,7 +19,7 @@ const patientSchema = new mongoose.Schema({
         max: 1024,
         min: 6,
     },
-    history:{
+    field:{
         type:String,
         required:true,
     },
@@ -29,4 +29,4 @@ const patientSchema = new mongoose.Schema({
     }
 },{timestamps:true});
 
-module.exports = mongoose.model(dbUtill.PATIENT, patientSchema);
+module.exports = mongoose.model(dbUtill.DOCTOR, doctorSchema);
