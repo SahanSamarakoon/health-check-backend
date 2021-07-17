@@ -67,7 +67,7 @@ module.exports = {
                 const result =  await getDoctorSlots(id);
                 res.status(201).send({success:1,result});
             }catch(error){
-                res.status(error.status||401).send(error.message);
+                res.status(error.status||401).send({message:error.message});
             }
 }
 }
