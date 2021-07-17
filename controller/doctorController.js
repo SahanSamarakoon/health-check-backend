@@ -60,7 +60,8 @@ module.exports = {
     getDoctorSlots:async(req,res)=>{
         const id = req.params.id;
             if (!id){
-                res.status(401).send({message:"Invalid id"})
+                res.status(401).send({message:"Invalid id"});
+                return;
             }
             try{
                 const result =  await getDoctorSlots(id);

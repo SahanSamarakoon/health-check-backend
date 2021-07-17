@@ -45,16 +45,21 @@ module.exports = {
     getDoctorSlots:async(id)=>{
         const currentDate = moment().toDate();
         const result = await Timeslot.find({doctorId:id,startTime:{$gte:currentDate}});
-        const timeslots = new Map();
+        const map = new Map();
         result.forEach((slot)=>{
             const date = `${slot.startTime.getFullYear()}-${slot.startTime.getMonth()}-${slot.startTime.getDate()}`;
-            if (!timeslots.get(date)){
-                timeslots.set(date,[]);
-                timeslots.get(date).push({startTime:slot.startTime,endTime:slot.endTime});
+            if (!map.get(date)){
+                map.set(date,[]);
+                map.get(date).push({startTime:slot.startTime,endTime:slot.endTime});
             }else{
-                timeslots.get(date).push({startTime:slot.startTime,endTime:slot.endTime});
+                map.get(date).push({startTime:slot.startTime,endTime:slot.endTime});
             }
 
+        });
+        const timeslots = {};
+        map.forEach((slot)=>{
+            const date = `${slot[0].startTime.getFullYear()}-${slot[0].startTime.getMonth()}-${slot[0].startTime.getDate()}`;
+            timeslots[date] = slot;
         });
         return timeslots;
 
