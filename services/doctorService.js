@@ -51,9 +51,9 @@ module.exports = {
             const date = `${slot.startTime.getFullYear()}-${slot.startTime.getMonth()}-${slot.startTime.getDate()}`;
             if (!map.get(date)) {
                 map.set(date, []);
-                map.get(date).push({startTime: slot.startTime, endTime: slot.endTime});
+                map.get(date).push({startTime: slot.startTime, endTime: slot.endTime,timeslotId:slot._id,availability:slot.availability});
             } else {
-                map.get(date).push({startTime: slot.startTime, endTime: slot.endTime});
+                map.get(date).push({startTime: slot.startTime, endTime: slot.endTime,timeslotId:slot._id,availability:slot.availability});
             }
 
         });
