@@ -37,10 +37,18 @@ module.exports = {
         await Timeslot.create({doctorId, startTime: data.startTime, endTime: data.endTime});
     },
     getDoctors: async (filter) => {
-        const updatedFilter = filter.map((f) => {
-            return {field: f}
-        });
-        const result = await Doctor.find({$or: updatedFilter}).select(["name", "email", "field", "dob"]);
+        let newFilter;
+        let result;
+        if (filter.length ==1 && filter[0]==""){
+             result = await Doctor.find().select(["name", "email", "field", "dob"]);
+        }else{
+             const updatedFilter = filter.map((f) => {
+                return {field: f}
+            });
+            newFilter = {$or:updatedFilter};
+            result = await Doctor.find(newFilter).select(["name", "email", "field", "dob"]);
+        }
+
         return result;
     },
     getDoctorSlots: async (id) => {

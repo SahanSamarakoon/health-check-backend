@@ -50,10 +50,12 @@ module.exports = {
     },
     makeAppointment: async (patientId, data) => {
         const availability = await Timeslot.findById(data.timeslotId);
-        const isClash = await Timeslot.find({patientId,availability:false,startTime:{$gte:availability.startTime},endTime:{$lt:availability.endTime}});
-        if (isClash){
-            throw new Error("Timeslots are clashing");
-        }
+        const startTime = moment(availability.startTime);
+        const endTime = availability.endTime;
+        // const isClash = await Timeslot.find({patientId,availability:false,startTime:{$gte:availability.startTime},endTime:{$lt:availability.endTime}});
+        // if (isClash){
+        //     throw new Error("Timeslots are clashing");
+        // }
         if (availability.availability) {
             const result = await Appointment.create({patientId, doctorId: data.doctorId, timeslotId: data.timeslotId});
             await Timeslot.findOneAndUpdate(data.timeslotId
