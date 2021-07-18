@@ -20,3 +20,8 @@ npm install
 nodemon
 ```
 
+Frontend
+
+```
+https://github.com/kasun7153/health-check-frontend
+```
