@@ -88,8 +88,13 @@ module.exports = {
         const updatedAppointments = [];
         result.forEach((appointment) => {
             if (moment(appointment.timeslotId.startTime).isAfter(currentDate)) {
-                appointment.doctorId.password = undefined;
-                appointment.patientId.password = undefined;
+                if (appointment.doctorId){
+                    appointment.doctorId.password = undefined;
+                }
+                if (appointment.patientId){
+                    appointment.patientId.password = undefined;
+                }
+
                 updatedAppointments.push(appointment);
             }
         });

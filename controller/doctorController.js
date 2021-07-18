@@ -97,6 +97,7 @@ module.exports = {
             const result = await getAppointments(id);
             res.status(201).send({success: 1, result});
         } catch (error) {
+            console.log(error)
             res.status(error.status || 401).send({message: error.message});
         }
     }
