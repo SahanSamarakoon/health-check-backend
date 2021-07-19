@@ -8,6 +8,10 @@ const {
     getAppointments
 } = require("../services/doctorService")
 
+///Joi is used for do the validation
+///this is where all the request and responses handling happens.
+
+
 module.exports = {
     loginDoctor: async (req, res) => {
         const schema = Joi.object({

@@ -1,6 +1,10 @@
 const Joi = require("joi");
 const {saveUser, loginPatient, makeAppointment,getAppointments} = require("../services/patientService")
 
+///Joi is used for do the validation
+///this is where all the request and responses handling happens.
+
+
 module.exports = {
     registerUser: async (req, res) => {
         const schema = Joi.object({

@@ -12,6 +12,8 @@ doctorRouter.post("/:id/timeslot", doctorController.addTimeslot);
 
 //get all doctors
 doctorRouter.get("/", doctorController.getAllDoctors);
+
+//get a doctor details by id
 doctorRouter.get("/:id", doctorController.getDoctorSlots);
 
 //get appointments

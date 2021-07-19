@@ -6,6 +6,8 @@ const Timeslot = require("../schemas/timeslot.schema");
 const Appointment = require("../schemas/appointment.schema");
 
 
+//logic and database calls related to doctor routes are here.
+
 module.exports = {
     loginDoctor: async (data) => {
         const user = await Doctor.findOne({email: data.email});

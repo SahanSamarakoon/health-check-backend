@@ -1,6 +1,12 @@
 const {removeAppointment} = require("../services/appointmentService");
 
+///Joi is used for do the validation
+///this is where all the request and responses handling happens.
+
+
 module.exports = {
+
+    //common function for patient and doctor to remove appointment
     removeAppointment: async (req, res) => {
         const id = req.params.id;
         if (!id) {

@@ -6,9 +6,14 @@ const Timeslot = require("../schemas/timeslot.schema");
 const moment = require("moment");
 
 
+//logic and database calls related to patient routes are here.
+//moment library is used for anything related to time
+//bcrypt library is used for hashing passwords
+
+
 module.exports = {
     saveUser: async (data) => {
-        const salt = genSaltSync(10);
+        const salt = genSaltSync(10);  //hashing password to save the user
         const dob = moment(data.dob);
         const updatedDob = dob.set("hour", 3);
         data.dob = updatedDob;

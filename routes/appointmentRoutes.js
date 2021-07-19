@@ -3,7 +3,7 @@ const appointmentRouter = express.Router();
 const appointmentController = require("../controller/appointmentController");
 const auth = require("../middlewares/auth");
 
-
+//common route for remove an appointment
 appointmentRouter.delete("/:id", appointmentController.removeAppointment);
 
 
