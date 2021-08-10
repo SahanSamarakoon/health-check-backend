@@ -43,7 +43,7 @@ module.exports = {
         timeslots.forEach(
             (slot)=>{
                     if ((moment(slot.startTime).isBetween(startTime,endTime)) || (moment(slot.endTime).isBetween(startTime,endTime))
-                    || (moment(slot.startTime).isAfter(startTime) && moment(slot.endTime).isBefore(endTime))
+                    || (moment(slot.startTime).isBefore(startTime) && moment(slot.endTime).isAfter(endTime))
                     ){
                         throw new Error("Timeslots are overlapping")
                     }
