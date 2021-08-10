@@ -1,4 +1,5 @@
 const moment = require("moment");
+const lodash = require("lodash");
 const Joi = require("joi");
 const {
     loginDoctor,
@@ -82,7 +83,7 @@ module.exports = {
                 })
             }
             const filter = req.query.filter;
-            const result = await getDoctors(filter,history);
+            const result = await getDoctors(filter,lodash.uniq(history));
             res.status(201).send({success: 1, result});
         } catch (error) {
             res.status(error.status || 401).send({message: error.message});
