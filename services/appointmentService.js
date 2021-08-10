@@ -5,7 +5,7 @@ const Timeslot = require("../schemas/timeslot.schema");
 
 module.exports = {
     removeAppointment: async (id,deleteNote,user) => {
-        console.log(user);
+        console.log(deleteNote);
         if(user.field){
             const result = await Appointment.findByIdAndUpdate(id, {state: "cancelled",deleteNote,deletedBy:user,isDoctorRead:true,isPatientRead:false});
             await Timeslot.findByIdAndUpdate(result.timeslotId, {availability: true});
