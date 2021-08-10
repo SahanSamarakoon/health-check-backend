@@ -16,7 +16,7 @@ module.exports = {
                 data.password,
                 user.password
             );
-            user.type="doctor";
+            user.type = "doctor";
             if (result) {
                 const jsontoken = sign({result: user}, "secret", {
                     expiresIn: "1day",
@@ -38,33 +38,33 @@ module.exports = {
     },
     createTimeslot: async (doctorId, data) => {
         const currentDate = moment();
-        const {startTime,endTime} = data;
-        const timeslots =  await Timeslot.find({archived:false, doctorId, startTime: {$gte: currentDate}});
+        const {startTime, endTime} = data;
+        const timeslots = await Timeslot.find({archived: false, doctorId, startTime: {$gte: currentDate}});
         timeslots.forEach(
-            (slot)=>{
-                    if ((moment(slot.startTime).isBetween(startTime,endTime)) || (moment(slot.endTime).isBetween(startTime,endTime))
+            (slot) => {
+                if ((moment(slot.startTime).isBetween(startTime, endTime)) || (moment(slot.endTime).isBetween(startTime, endTime))
                     || (moment(slot.startTime).isBefore(startTime) && moment(slot.endTime).isAfter(endTime))
-                    ){
-                        throw new Error("Timeslots are overlapping")
-                    }
+                ) {
+                    throw new Error("Timeslots are overlapping")
+                }
             }
         );
         await Timeslot.create({doctorId, startTime: data.startTime, endTime: data.endTime});
     },
-    deleteTimeslot:async (id)=>{
-        await Timeslot.findByIdAndUpdate(id,{archived:true});
+    deleteTimeslot: async (id) => {
+        await Timeslot.findByIdAndUpdate(id, {archived: true});
     }
     ,
     getDoctors: async (filter) => {
         let newFilter;
         let result;
-        if (filter.length ==1 && filter[0]==""){
-             result = await Doctor.find().select(["name", "email", "field", "dob"]);
-        }else{
-             const updatedFilter = filter.map((f) => {
+        if (filter.length == 1 && filter[0] == "") {
+            result = await Doctor.find().select(["name", "email", "field", "dob"]);
+        } else {
+            const updatedFilter = filter.map((f) => {
                 return {field: f}
             });
-            newFilter = {$or:updatedFilter};
+            newFilter = {$or: updatedFilter};
             result = await Doctor.find(newFilter).select(["name", "email", "field", "dob"]);
         }
 
@@ -72,21 +72,31 @@ module.exports = {
     },
     getDoctorSlots: async (id) => {
         const currentDate = moment().toDate();
-        const result = await Timeslot.find({archived:false,doctorId: id, startTime: {$gte: currentDate}});
+        const result = await Timeslot.find({archived: false, doctorId: id, startTime: {$gte: currentDate}});
         const map = new Map();
         result.forEach((slot) => {
-            const date = `${slot.startTime.getFullYear()}-${slot.startTime.getMonth()+1}-${slot.startTime.getDate()}`;
+            const date = `${slot.startTime.getFullYear()}-${slot.startTime.getMonth() + 1}-${slot.startTime.getDate()}`;
             if (!map.get(date)) {
                 map.set(date, []);
-                map.get(date).push({startTime: slot.startTime, endTime: slot.endTime,timeslotId:slot._id,availability:slot.availability});
+                map.get(date).push({
+                    startTime: slot.startTime,
+                    endTime: slot.endTime,
+                    timeslotId: slot._id,
+                    availability: slot.availability
+                });
             } else {
-                map.get(date).push({startTime: slot.startTime, endTime: slot.endTime,timeslotId:slot._id,availability:slot.availability});
+                map.get(date).push({
+                    startTime: slot.startTime,
+                    endTime: slot.endTime,
+                    timeslotId: slot._id,
+                    availability: slot.availability
+                });
             }
 
         });
         const timeslots = {};
         map.forEach((slot) => {
-            const date = `${slot[0].startTime.getFullYear()}-${slot[0].startTime.getMonth()+1}-${slot[0].startTime.getDate()}`;
+            const date = `${slot[0].startTime.getFullYear()}-${slot[0].startTime.getMonth() + 1}-${slot[0].startTime.getDate()}`;
             timeslots[date] = slot;
         });
         return timeslots;
@@ -102,12 +112,12 @@ module.exports = {
         return result;
     },
     getAppointments: async (id) => {
-        const result = await Appointment.find({doctorId: id}).populate(["timeslotId","patientId","doctorId"]);
-        await Appointment.updateMany({doctorId:id,isDoctorRead:false},{isDoctorRead:true});
+        const result = await Appointment.find({doctorId: id}).populate(["timeslotId", "patientId", "doctorId"]);
+        await Appointment.updateMany({doctorId: id, isDoctorRead: false}, {isDoctorRead: true});
         const currentDate = moment().toDate();
         const updatedAppointments = [];
         result.forEach((appointment) => {
-            if (appointment.timeslotId){
+            if (appointment.timeslotId) {
                 if (moment(appointment.timeslotId.startTime).isAfter(currentDate)) {
                     if (appointment.doctorId) {
                         appointment.doctorId.password = undefined;
@@ -123,8 +133,11 @@ module.exports = {
         return updatedAppointments;
     }
     ,
-    getNewAppointments:async(id)=>{
-        const result = await Appointment.find({doctorId: id,isDoctorRead:false}).populate(["timeslotId","patientId","doctorId"]);
+    getNewAppointments: async (id) => {
+        const result = await Appointment.find({
+            doctorId: id,
+            isDoctorRead: false
+        }).populate(["timeslotId", "patientId", "doctorId"]);
         return result;
     }
 

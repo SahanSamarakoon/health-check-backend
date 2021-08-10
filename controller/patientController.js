@@ -17,7 +17,7 @@ module.exports = {
             name: Joi.string().required(),
             email: Joi.string().email().required(),
             password: Joi.string().min(6).max(25).required(),
-            history: Joi.object({key: Joi.string(), value: Joi.string()}),
+            history: Joi.array().items(Joi.object({key: Joi.string(), value: Joi.string()})),
             dob: Joi.date(),
         });
         const validation = schema.validate(req.body);
