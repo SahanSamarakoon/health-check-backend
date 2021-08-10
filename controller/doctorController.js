@@ -51,6 +51,7 @@ module.exports = {
             res.status(401).send({message: validation.error.message});
             return;
         }
+
         const doctorId = req.params.id;
         const body = validation.value;
         try {
@@ -126,6 +127,7 @@ module.exports = {
         const {timeslotId} =  validation.value;
         try {
             await deleteTimeslot(timeslotId);
+            res.status(201).send({success:1,message:"Successfully deleted"});
         }
         catch (error){
             res.status(error.status||401).send({message:error.message})
