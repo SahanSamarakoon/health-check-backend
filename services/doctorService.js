@@ -38,12 +38,17 @@ module.exports = {
     },
     createTimeslot: async (doctorId, data) => {
         const currentDate = moment();
+        const {startTime,endTime} = data;
         const timeslots =  await Timeslot.find({archived:false, doctorId, startTime: {$gte: currentDate}});
-        timeslots.forEach(
-            (slot)=>{
-
-            }
-        );
+        // timeslots.forEach(
+        //     (slot)=>{
+        //             if ((moment(slot.startTime).isBetween(startTime,endTime)) || (moment(slot.endTime).isBetween(startTime,endTime))
+        //             || (moment(slot.startTime))
+        //             ){
+        //                 throw new Error("Timeslots are overlapping")
+        //             }
+        //     }
+        // );
         await Timeslot.create({doctorId, startTime: data.startTime, endTime: data.endTime});
     },
     deleteTimeslot:async (id)=>{

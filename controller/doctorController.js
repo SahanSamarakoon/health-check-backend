@@ -54,8 +54,8 @@ module.exports = {
             return;
         }
         const {startTime,endTime} = validation.value;
-        if (moment(startTime).isBefore(moment(endTime))){
-            res.status(401).send({message: "Start time is should be before end time"});
+        if (moment(startTime).isAfter(moment(endTime))){
+            res.status(401).send({message: "Start time should be before end time"});
             return;
         }
 
