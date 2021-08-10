@@ -55,7 +55,7 @@ module.exports = {
         await Timeslot.findByIdAndUpdate(id, {archived: true});
     }
     ,
-    getDoctors: async (filter) => {
+    getDoctors: async (filter,history) => {
         let newFilter;
         let result;
         if (filter.length == 1 && filter[0] == "") {
@@ -66,6 +66,23 @@ module.exports = {
             });
             newFilter = {$or: updatedFilter};
             result = await Doctor.find(newFilter).select(["name", "email", "field", "dob"]);
+        }
+        const suggested = [];
+        const notSuggested = [];
+        if (history){
+            if (history.length > 0 && history[0] != "") {
+                result.forEach(doctor => {
+                    if (history.includes(doctor.field)) {
+                        const updatedDoctor = {_id:doctor._id,name:doctor.name,email:doctor.email,dob:doctor.dob,filed:doctor.field,suggested:true}
+                        suggested.push(updatedDoctor);
+                    } else {
+                        const updatedDoctor = {_id:doctor._id,name:doctor.name,email:doctor.email,dob:doctor.dob,filed:doctor.field,suggested:false}
+                        notSuggested.push(updatedDoctor);
+                    }
+                });
+            }
+            const updatedList = suggested.concat(notSuggested);
+            return updatedList;
         }
 
         return result;
