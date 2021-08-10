@@ -37,7 +37,13 @@ module.exports = {
 
     },
     createTimeslot: async (doctorId, data) => {
+        const currentDate = moment();
+        const timeslots =  await Timeslot.find({archived:false, doctorId, startTime: {$gte: currentDate}});
+        timeslots.forEach(
+            (slot)=>{
 
+            }
+        );
         await Timeslot.create({doctorId, startTime: data.startTime, endTime: data.endTime});
     },
     deleteTimeslot:async (id)=>{
@@ -96,15 +102,17 @@ module.exports = {
         const currentDate = moment().toDate();
         const updatedAppointments = [];
         result.forEach((appointment) => {
-            if (moment(appointment.timeslotId.startTime).isAfter(currentDate)) {
-                if (appointment.doctorId){
-                    appointment.doctorId.password = undefined;
-                }
-                if (appointment.patientId){
-                    appointment.patientId.password = undefined;
-                }
+            if (appointment.timeslotId){
+                if (moment(appointment.timeslotId.startTime).isAfter(currentDate)) {
+                    if (appointment.doctorId) {
+                        appointment.doctorId.password = undefined;
+                    }
+                    if (appointment.patientId) {
+                        appointment.patientId.password = undefined;
+                    }
 
-                updatedAppointments.push(appointment);
+                    updatedAppointments.push(appointment);
+                }
             }
         });
         return updatedAppointments;

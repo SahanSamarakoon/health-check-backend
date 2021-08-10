@@ -1,3 +1,4 @@
+const moment = require("moment");
 const Joi = require("joi");
 const {
     loginDoctor,
@@ -7,6 +8,7 @@ const {
     getDoctorDetails,
     getAppointments,getNewAppointments,deleteTimeslot
 } = require("../services/doctorService")
+
 
 ///Joi is used for do the validation
 ///this is where all the request and responses handling happens.
@@ -49,6 +51,16 @@ module.exports = {
         const validation = schema.validate(req.body);
         if (validation.error) {
             res.status(401).send({message: validation.error.message});
+            return;
+        }
+        const {startTime,endTime} = validation.value;
+        if (moment(startTime).isBefore(moment(endTime))){
+            res.status(401).send({message: "Start time is should be before end time"});
+            return;
+        }
+
+        if (moment(startTime).isBefore(moment())){
+            res.status(401).send({message: "Start time is passed"});
             return;
         }
 
