@@ -19,4 +19,7 @@ doctorRouter.get("/:id", doctorController.getDoctorSlots);
 //get appointments
 doctorRouter.get("/me/appointment", auth.checkToken, doctorController.getAppointments);
 
+
+doctorRouter.get("/me/appointment/new",auth.checkToken,doctorController.getNewAppointments)
+
 module.exports = doctorRouter;

@@ -4,7 +4,7 @@ const appointmentController = require("../controller/appointmentController");
 const auth = require("../middlewares/auth");
 
 //common route for remove an appointment
-appointmentRouter.delete("/:id", appointmentController.removeAppointment);
+appointmentRouter.patch("/:id",auth.checkToken, appointmentController.removeAppointment);
 
 
 module.exports = appointmentRouter;

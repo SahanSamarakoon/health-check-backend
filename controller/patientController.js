@@ -59,6 +59,7 @@ module.exports = {
         const schema = Joi.object({
             doctorId: Joi.string().required(),
             timeslotId: Joi.string().required(),
+            appointmentNote:Joi.string().allow(""),
             state: Joi.string().default("booked")
         });
         const validation = schema.validate(req.body);

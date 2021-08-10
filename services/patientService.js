@@ -56,7 +56,7 @@ module.exports = {
     makeAppointment: async (patientId, data) => {
         const availability = await Timeslot.findById(data.timeslotId);
         if (availability.availability) {
-            const result = await Appointment.create({patientId, doctorId: data.doctorId, timeslotId: data.timeslotId});
+            const result = await Appointment.create({patientId, doctorId: data.doctorId, timeslotId: data.timeslotId,appointmentNote:data.appointmentNote});
             await Timeslot.findByIdAndUpdate(data.timeslotId
                 , {availability: false});
             return result;

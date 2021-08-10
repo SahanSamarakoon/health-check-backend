@@ -16,6 +16,7 @@ module.exports = {
                 data.password,
                 user.password
             );
+            user.type="doctor";
             if (result) {
                 const jsontoken = sign({result: user}, "secret", {
                     expiresIn: "1day",
@@ -58,7 +59,7 @@ module.exports = {
         const result = await Timeslot.find({doctorId: id, startTime: {$gte: currentDate}});
         const map = new Map();
         result.forEach((slot) => {
-            const date = `${slot.startTime.getFullYear()}-${slot.startTime.getMonth()}-${slot.startTime.getDate()}`;
+            const date = `${slot.startTime.getFullYear()}-${slot.startTime.getMonth()+1}-${slot.startTime.getDate()}`;
             if (!map.get(date)) {
                 map.set(date, []);
                 map.get(date).push({startTime: slot.startTime, endTime: slot.endTime,timeslotId:slot._id,availability:slot.availability});
@@ -69,7 +70,7 @@ module.exports = {
         });
         const timeslots = {};
         map.forEach((slot) => {
-            const date = `${slot[0].startTime.getFullYear()}-${slot[0].startTime.getMonth()}-${slot[0].startTime.getDate()}`;
+            const date = `${slot[0].startTime.getFullYear()}-${slot[0].startTime.getMonth()+1}-${slot[0].startTime.getDate()}`;
             timeslots[date] = slot;
         });
         return timeslots;
@@ -86,6 +87,7 @@ module.exports = {
     },
     getAppointments: async (id) => {
         const result = await Appointment.find({doctorId: id}).populate(["timeslotId","patientId","doctorId"]);
+        await Appointment.updateMany({isRead:false});
         const currentDate = moment().toDate();
         const updatedAppointments = [];
         result.forEach((appointment) => {
@@ -101,6 +103,11 @@ module.exports = {
             }
         });
         return updatedAppointments;
+    }
+    ,
+    getNewAppointments:async(id)=>{
+        const result = await Appointment.find({doctorId: id,isDoctorRead:false}).populate(["timeslotId","patientId","doctorId"]);
+        return result;
     }
 
 }
