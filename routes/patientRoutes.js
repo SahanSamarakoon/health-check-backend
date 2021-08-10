@@ -14,5 +14,7 @@ patientRouter.post("/appointment", auth.checkToken, patientController.addAppoint
 //get appointments
 patientRouter.get("/me/appointment", auth.checkToken, patientController.getAppointments);
 
+patientRouter.get("/me/appointment/new",auth.checkToken,patientController.getNotifications);
+
 
 module.exports = patientRouter;

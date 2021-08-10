@@ -19,10 +19,9 @@ const patientSchema = new mongoose.Schema({
         max: 1024,
         min: 6,
     },
-    history: {
-        type: String,
-        required: true,
-    },
+    history:[
+      {key:String,value:String}
+    ],
     dob: {
         type: Date,
         required: true

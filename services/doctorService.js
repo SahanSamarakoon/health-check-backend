@@ -87,7 +87,7 @@ module.exports = {
     },
     getAppointments: async (id) => {
         const result = await Appointment.find({doctorId: id}).populate(["timeslotId","patientId","doctorId"]);
-        await Appointment.updateMany({isRead:false});
+        await Appointment.updateMany({doctorId:id,isDoctorRead:false},{isDoctorRead:true});
         const currentDate = moment().toDate();
         const updatedAppointments = [];
         result.forEach((appointment) => {

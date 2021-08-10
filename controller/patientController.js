@@ -1,5 +1,5 @@
 const Joi = require("joi");
-const {saveUser, loginPatient, makeAppointment,getAppointments} = require("../services/patientService")
+const {saveUser, loginPatient, makeAppointment,getAppointments,getNewAppointments} = require("../services/patientService")
 
 ///Joi is used for do the validation
 ///this is where all the request and responses handling happens.
@@ -83,6 +83,15 @@ module.exports = {
             res.status(201).send({success: 1, result});
         } catch (error) {
             res.status(error.status || 401).send({message: error.message});
+        }
+    },
+    getNotifications:async (req,res) =>{
+        const id =req.user._id;
+        try {
+            const result = await getNewAppointments(id);
+            res.status(201).send({success:1,result});
+        }catch(error){
+            res.status(error.status || 401).send({message:error.message})
         }
     }
 }
