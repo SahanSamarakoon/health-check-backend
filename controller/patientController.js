@@ -1,5 +1,11 @@
 const Joi = require("joi");
-const {saveUser, loginPatient, makeAppointment,getAppointments,getNewAppointments} = require("../services/patientService")
+const {
+    saveUser,
+    loginPatient,
+    makeAppointment,
+    getAppointments,
+    getNewAppointments
+} = require("../services/patientService")
 
 ///Joi is used for do the validation
 ///this is where all the request and responses handling happens.
@@ -11,7 +17,7 @@ module.exports = {
             name: Joi.string().required(),
             email: Joi.string().email().required(),
             password: Joi.string().min(6).max(25).required(),
-            history: Joi.string().allow(""),
+            history: Joi.object({key: Joi.string(), value: Joi.string()}),
             dob: Joi.date(),
         });
         const validation = schema.validate(req.body);
@@ -59,7 +65,7 @@ module.exports = {
         const schema = Joi.object({
             doctorId: Joi.string().required(),
             timeslotId: Joi.string().required(),
-            appointmentNote:Joi.string().allow(""),
+            appointmentNote: Joi.string().allow(""),
             state: Joi.string().default("booked")
         });
         const validation = schema.validate(req.body);
@@ -85,13 +91,13 @@ module.exports = {
             res.status(error.status || 401).send({message: error.message});
         }
     },
-    getNotifications:async (req,res) =>{
-        const id =req.user._id;
+    getNotifications: async (req, res) => {
+        const id = req.user._id;
         try {
             const result = await getNewAppointments(id);
-            res.status(201).send({success:1,result});
-        }catch(error){
-            res.status(error.status || 401).send({message:error.message})
+            res.status(201).send({success: 1, result});
+        } catch (error) {
+            res.status(error.status || 401).send({message: error.message})
         }
     }
 }

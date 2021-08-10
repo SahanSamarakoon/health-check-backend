@@ -17,13 +17,13 @@ module.exports = {
             res.status(401).send({message: validation.error.message});
             return;
         }
-        const {note} = validation.value;
+        const {deleteNote} = validation.value;
         if (!id) {
             res.status(401).send({message: "Id is not valid"});
             return;
         }
         try {
-            await removeAppointment(id,note,req.user);
+            await removeAppointment(id,deleteNote,req.user);
             res.status(201).send({success: 1, message: "appointment removed"})
 
         } catch (error) {
