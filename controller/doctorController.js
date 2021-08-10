@@ -75,8 +75,13 @@ module.exports = {
     },
     getAllDoctors: async (req, res) => {
         try {
+            const history = [];
+            if (req.user.history && req.user.history.length>0){
+                req.user.history.forEach(record=>{
+                    history.push(record.value);
+                })
+            }
             const filter = req.query.filter;
-            const history = req.query.history;
             const result = await getDoctors(filter,history);
             res.status(201).send({success: 1, result});
         } catch (error) {

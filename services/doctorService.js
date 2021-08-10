@@ -80,9 +80,10 @@ module.exports = {
                         notSuggested.push(updatedDoctor);
                     }
                 });
+                const updatedList = suggested.concat(notSuggested);
+                return updatedList;
             }
-            const updatedList = suggested.concat(notSuggested);
-            return updatedList;
+
         }
 
         return result;

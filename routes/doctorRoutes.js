@@ -14,7 +14,7 @@ doctorRouter.post("/:id/timeslot", doctorController.addTimeslot);
 doctorRouter.delete("/timeslot/:timeslotId",doctorController.deleteTimeSlot);
 
 //get all doctors
-doctorRouter.get("/", doctorController.getAllDoctors);
+doctorRouter.get("/",auth.getToken, doctorController.getAllDoctors);
 
 //get a doctor details by id
 doctorRouter.get("/:id", doctorController.getDoctorSlots);
