@@ -77,7 +77,7 @@ module.exports = {
     getAllDoctors: async (req, res) => {
         try {
             const history = [];
-            if (req.user.history && req.user.history.length>0){
+            if (req.user && req.user.history && req.user.history.length>0){
                 req.user.history.forEach(record=>{
                     history.push(record.value);
                 })
