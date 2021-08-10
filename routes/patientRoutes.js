@@ -16,5 +16,7 @@ patientRouter.get("/me/appointment", auth.checkToken, patientController.getAppoi
 
 patientRouter.get("/me/appointment/new",auth.checkToken,patientController.getNotifications);
 
+patientRouter.get("/getSuggestions",auth.checkToken,patientController.getSuggestedDoctors);
+
 
 module.exports = patientRouter;

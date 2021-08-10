@@ -34,7 +34,7 @@ const appointmentSchema = new mongoose.Schema({
     },
     isPatientRead:{
         type:Boolean,
-        default:false
+        default:true
     }
 
 }, {timestamps: true});

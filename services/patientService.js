@@ -83,6 +83,9 @@ module.exports = {
         const result = await Appointment.find({patientId: id,isPatientRead:false}).populate(["timeslotId","patientId","doctorId"]);
         await Appointment.updateMany({doctorId:id,isDoctorRead:false},{isPatientRead:true});
         return result;
+    },
+    getSuggestedDoctors:async(id,history)=>{
+
     }
 
 }

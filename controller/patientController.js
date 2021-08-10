@@ -4,7 +4,8 @@ const {
     loginPatient,
     makeAppointment,
     getAppointments,
-    getNewAppointments
+    getNewAppointments,
+    getSuggestedDoctors
 } = require("../services/patientService")
 
 ///Joi is used for do the validation
@@ -97,6 +98,15 @@ module.exports = {
             const result = await getNewAppointments(id);
             res.status(201).send({success: 1, result});
         } catch (error) {
+            res.status(error.status || 401).send({message: error.message})
+        }
+    },
+    getSuggestedDoctors:async(req,res)=>{
+        const user = req.user;
+        try{
+            const result = await getSuggestedDoctors(user._id,user.history);
+            console.log(result);
+        }catch(error){
             res.status(error.status || 401).send({message: error.message})
         }
     }
