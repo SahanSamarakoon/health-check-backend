@@ -19,6 +19,10 @@ const timeslotSchema = new mongoose.Schema({
         default: true,
         required: true,
     },
+    archived:{
+        type:Boolean,
+        default:false
+    }
 
 }, {timestamps: true});
 

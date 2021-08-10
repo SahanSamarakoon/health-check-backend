@@ -10,6 +10,9 @@ doctorRouter.post("/login", doctorController.loginDoctor);
 //add timeslot
 doctorRouter.post("/:id/timeslot", doctorController.addTimeslot);
 
+//delete timeslot
+doctorRouter.delete("timeslot/:id",doctorController.deleteTimeSlot);
+
 //get all doctors
 doctorRouter.get("/", doctorController.getAllDoctors);
 

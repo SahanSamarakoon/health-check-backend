@@ -37,8 +37,13 @@ module.exports = {
 
     },
     createTimeslot: async (doctorId, data) => {
+
         await Timeslot.create({doctorId, startTime: data.startTime, endTime: data.endTime});
     },
+    deleteTimeslot:async (id)=>{
+        await Timeslot.findByIdAndUpdate(id,{archived:true});
+    }
+    ,
     getDoctors: async (filter) => {
         let newFilter;
         let result;
@@ -56,7 +61,7 @@ module.exports = {
     },
     getDoctorSlots: async (id) => {
         const currentDate = moment().toDate();
-        const result = await Timeslot.find({doctorId: id, startTime: {$gte: currentDate}});
+        const result = await Timeslot.find({archived:false,doctorId: id, startTime: {$gte: currentDate}});
         const map = new Map();
         result.forEach((slot) => {
             const date = `${slot.startTime.getFullYear()}-${slot.startTime.getMonth()+1}-${slot.startTime.getDate()}`;

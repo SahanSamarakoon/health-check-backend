@@ -5,7 +5,7 @@ const {
     getDoctors,
     getDoctorSlots,
     getDoctorDetails,
-    getAppointments,getNewAppointments
+    getAppointments,getNewAppointments,deleteTimeslot
 } = require("../services/doctorService")
 
 ///Joi is used for do the validation
@@ -112,6 +112,23 @@ module.exports = {
             res.status(201).send({success:1,result});
         }catch(error){
             res.status(error.status || 401).send({message:error.message})
+        }
+    },
+    deleteTimeSlot:async (req,res)=>{
+        const schema = Joi.object(
+            {timeslotId: Joi.string().required()}
+        );
+        const validation = schema.validate(req.params);
+        if (validation.error){
+            res.status(401).send({message: validation.error.message});
+            return;
+        }
+        const {timeslotId} =  validation.value;
+        try {
+            await deleteTimeslot(timeslotId);
+        }
+        catch (error){
+            res.status(error.status||401).send({message:error.message})
         }
     }
 }
