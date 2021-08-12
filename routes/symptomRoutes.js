@@ -5,7 +5,7 @@ const {getAllSymptoms,addSymptom,getDisease} = require("../controller/symptomCon
 
 symptomRouter.get("/",getAllSymptoms);
 symptomRouter.post("/",addSymptom);
-symptomRouter.get("/disease",getDisease);
+symptomRouter.post("/disease",getDisease);
 
 
 module.exports = symptomRouter;
