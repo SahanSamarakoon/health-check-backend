@@ -12,6 +12,9 @@ router.use("/doctor", require("./doctorRoutes"));
 //all the routes related to appointment
 router.use("/appointment", require("./appointmentRoutes"))
 
+//Route to get symptoms
+router.use("/symptom",require("./symptomRoutes"))
+
 //Route to get user information
 router.get("/me", auth.checkToken, (req, res) => res.status(201).send({success: 1, result: req.user}))
 
