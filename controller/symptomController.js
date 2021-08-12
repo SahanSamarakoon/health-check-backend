@@ -1,5 +1,6 @@
 const {getSymptoms,addSymptom,getDisease} = require("../services/symptomService");
 const Joi = require("joi");
+const lodash = require("lodash");
 
 module.exports = {
     getAllSymptoms:async (req,res)=>{
@@ -24,6 +25,7 @@ module.exports = {
             {symptoms: Joi.array().min(2).max(3)}
         );
 
+        req.body.symptoms = lodash.uniq( req.body.symptoms)
         const validation = schema.validate(req.body);
         if(validation.error){
             res.status(401).send(validation.error);

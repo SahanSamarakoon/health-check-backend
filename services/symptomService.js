@@ -46,7 +46,7 @@ module.exports = {
         if(result){
             docs.filter((d)=>{
                 if (d.disease==result.disease){
-                    result.disease=d;
+                    result.disease=[d];
                 }
             })
             return result;
