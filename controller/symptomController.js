@@ -28,7 +28,7 @@ module.exports = {
         req.body.symptoms = lodash.uniq( req.body.symptoms)
         const validation = schema.validate(req.body);
         if(validation.error){
-            res.status(401).send(validation.error);
+            res.status(401).send({message: validation.error.message});
             return;
         }
         const {symptoms} = validation.value;
