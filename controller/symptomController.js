@@ -21,7 +21,7 @@ module.exports = {
     },
     getDisease:async(req,res)=>{
         const schema = Joi.object(
-            {symptoms: Joi.array()}
+            {symptoms: Joi.array().min(2).max(3)}
         );
 
         const validation = schema.validate(req.body);
