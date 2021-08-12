@@ -8,6 +8,7 @@ module.exports = {
         await Symptoms.create(body);
     },
     getDisease:async(symptoms)=>{
+
         const docs = await Symptoms.find({_id:{$in:symptoms}});
         const map = new Map();
         if(docs.length>0){
@@ -31,6 +32,7 @@ module.exports = {
                     shouldCheck:false,
                     disease:key
                 }
+                return;
             }else{
                 map.forEach((symptom,key)=>{
                     if (!updatedSymptoms.includes(key)){
@@ -40,6 +42,9 @@ module.exports = {
                 })
             }
         })
+        if(result){
+            return result;
+        }
         await Promise.all(
             updatedSymptoms.map(async(disease)=>{
                     const allSymptoms = await Symptoms.find({disease}).select(["symptom","disease"]);
