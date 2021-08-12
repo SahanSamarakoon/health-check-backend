@@ -28,9 +28,10 @@ module.exports = {
         const removeSymptoms = [];
          map.forEach((symptom,key)=>{
             if(symptom.length>=2){
+
                 result =  {
                     shouldCheck:false,
-                    disease:key
+                    disease:[key]
                 }
                 return;
             }else{
@@ -43,6 +44,11 @@ module.exports = {
             }
         })
         if(result){
+            docs.filter((d)=>{
+                if (d.disease==result.disease){
+                    result.disease=d;
+                }
+            })
             return result;
         }
         await Promise.all(
