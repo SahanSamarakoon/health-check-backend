@@ -77,10 +77,10 @@ module.exports = {
          result = {shouldCheck:true,symptoms:updatedResult}
         if (result.shouldCheck){
             if(symptoms.length==2){
-                result.percentage = "25%";
+                result.percentage = "50%";
             }
             else if (symptoms.length==3){
-                result.percentage = "16.66%"
+                result.percentage = "33.33%"
             }
         }
         return result;
