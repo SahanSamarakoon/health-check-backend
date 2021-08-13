@@ -22,7 +22,7 @@ module.exports = {
                 }
             });
         }
-        let result;
+        let result = { shouldCheck:true};
         const updatedSymptoms = [];
         const updatedResult =[];
         const removeSymptoms = [];
@@ -56,7 +56,7 @@ module.exports = {
                 })
             }
         }
-        if(result){
+        if(!result.shouldCheck){
             docs.filter((d)=>{
                 if (d.disease==result.disease){
                     result.disease=[d];
