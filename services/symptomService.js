@@ -43,6 +43,19 @@ module.exports = {
                 })
             }
         })
+    if (!result.shouldCheck){
+            if (symptoms.length==2){
+                result.percentage = "100%"
+            }else if (symptoms.length==3){
+                map.forEach((symp)=>{
+                    if (symp.length==3){
+                        result.percentage = "100%"
+                    }else if (symp.length==2){
+                        result.percentage = "66.66%"
+                    }
+                })
+            }
+        }
         if(result){
             docs.filter((d)=>{
                 if (d.disease==result.disease){
@@ -62,6 +75,14 @@ module.exports = {
             })
         );
          result = {shouldCheck:true,symptoms:updatedResult}
+        if (result.shouldCheck){
+            if(symptoms.length==2){
+                result.percentage = "25%";
+            }
+            else if (symptoms.length==3){
+                result.percentage = "16.66%"
+            }
+        }
         return result;
     }
 }
