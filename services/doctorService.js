@@ -43,7 +43,7 @@ module.exports = {
         timeslots.forEach(
             (slot) => {
                 if ((moment(slot.startTime).isBetween(startTime, endTime)) || (moment(slot.endTime).isBetween(startTime, endTime))
-                    || (moment(slot.startTime).isBefore(startTime) && moment(slot.endTime).isAfter(endTime))
+                    || (moment(slot.startTime).isBefore(startTime) && moment(slot.endTime).isAfter(endTime) || moment(startTime).isSame(moment(slot.startTime)))
                 ) {
                     throw new Error("Timeslots are overlapping")
                 }
@@ -52,6 +52,10 @@ module.exports = {
         await Timeslot.create({doctorId, startTime: data.startTime, endTime: data.endTime});
     },
     deleteTimeslot: async (id) => {
+        const slot = await Timeslot.findById(id);
+        if (!slot.availability){
+            throw new Error("Timeslot is already booked. Can't delete");
+        }
         await Timeslot.findByIdAndUpdate(id, {archived: true});
     }
     ,
