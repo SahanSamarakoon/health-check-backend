@@ -14,8 +14,10 @@ patientRouter.post("/appointment", auth.checkToken, patientController.addAppoint
 //get appointments
 patientRouter.get("/me/appointment", auth.checkToken, patientController.getAppointments);
 
+//get the current notifications
 patientRouter.get("/me/appointment/new",auth.checkToken,patientController.getNotifications);
 
+//get suggested doctor for each patient according to the history
 patientRouter.get("/getSuggestions",auth.checkToken,patientController.getSuggestedDoctors);
 
 

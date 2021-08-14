@@ -2,6 +2,9 @@ const {getSymptoms,addSymptom,getDisease} = require("../services/symptomService"
 const Joi = require("joi");
 const lodash = require("lodash");
 
+///Joi is used for do the validation
+///this is where all the request and responses handling happens.
+
 module.exports = {
     getAllSymptoms:async (req,res)=>{
         try{

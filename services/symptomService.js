@@ -1,12 +1,19 @@
 const Symptoms = require("../schemas/symptom.schema");
+
+//logic and database calls related to self diagnosis system routes are here.
+
+
 module.exports = {
     getSymptoms: async () => {
         const result = await Symptoms.find().sort({["symptom"]: 1});
         return result;
     },
+
+    //add symptom
     addSymptom: async (body) => {
         await Symptoms.create(body);
     },
+    //get the suggested disease
     getDisease: async (symptoms) => {
 
         const docs = await Symptoms.find({_id: {$in: symptoms}});
