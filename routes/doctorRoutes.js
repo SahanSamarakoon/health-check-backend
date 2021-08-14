@@ -11,10 +11,10 @@ doctorRouter.post("/login", doctorController.loginDoctor);
 doctorRouter.post("/:id/timeslot", doctorController.addTimeslot);
 
 //delete timeslot
-doctorRouter.delete("/timeslot/:timeslotId",doctorController.deleteTimeSlot);
+doctorRouter.delete("/timeslot/:timeslotId", doctorController.deleteTimeSlot);
 
 //get all doctors
-doctorRouter.get("/",auth.getToken, doctorController.getAllDoctors);
+doctorRouter.get("/", auth.getToken, doctorController.getAllDoctors);
 
 //get a doctor details by id
 doctorRouter.get("/:id", doctorController.getDoctorSlots);
@@ -23,6 +23,6 @@ doctorRouter.get("/:id", doctorController.getDoctorSlots);
 doctorRouter.get("/me/appointment", auth.checkToken, doctorController.getAppointments);
 
 
-doctorRouter.get("/me/appointment/new",auth.checkToken,doctorController.getNewAppointments)
+doctorRouter.get("/me/appointment/new", auth.checkToken, doctorController.getNewAppointments)
 
 module.exports = doctorRouter;

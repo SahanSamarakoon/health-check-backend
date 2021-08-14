@@ -56,7 +56,12 @@ module.exports = {
     makeAppointment: async (patientId, data) => {
         const availability = await Timeslot.findById(data.timeslotId);
         if (availability.availability) {
-            const result = await Appointment.create({patientId, doctorId: data.doctorId, timeslotId: data.timeslotId,appointmentNote:data.appointmentNote});
+            const result = await Appointment.create({
+                patientId,
+                doctorId: data.doctorId,
+                timeslotId: data.timeslotId,
+                appointmentNote: data.appointmentNote
+            });
             await Timeslot.findByIdAndUpdate(data.timeslotId
                 , {availability: false});
             return result;
@@ -66,8 +71,8 @@ module.exports = {
 
     },
     getAppointments: async (id) => {
-        const result = await Appointment.find({patientId: id}).populate(["timeslotId","patientId","doctorId"]);
-        await Appointment.updateMany({patientId: id,isPatientRead:false},{isPatientRead:true});
+        const result = await Appointment.find({patientId: id}).populate(["timeslotId", "patientId", "doctorId"]);
+        await Appointment.updateMany({patientId: id, isPatientRead: false}, {isPatientRead: true});
         const currentDate = moment().toDate();
         const updatedAppointments = [];
         result.forEach((appointment) => {
@@ -79,12 +84,15 @@ module.exports = {
         });
         return updatedAppointments;
     },
-    getNewAppointments:async (id)=>{
-        const result = await Appointment.find({patientId: id,isPatientRead:false}).populate(["timeslotId","patientId","doctorId"]);
-        await Appointment.updateMany({doctorId:id,isDoctorRead:false},{isPatientRead:true});
+    getNewAppointments: async (id) => {
+        const result = await Appointment.find({
+            patientId: id,
+            isPatientRead: false
+        }).populate(["timeslotId", "patientId", "doctorId"]);
+        await Appointment.updateMany({doctorId: id, isDoctorRead: false}, {isPatientRead: true});
         return result;
     },
-    getSuggestedDoctors:async(id,history)=>{
+    getSuggestedDoctors: async (id, history) => {
 
     }
 

@@ -14,7 +14,7 @@ Install Node Modules
 npm install
 ```
 
- Then run the express server.
+Then run the express server.
 
 ```bash
 nodemon

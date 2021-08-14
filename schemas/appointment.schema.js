@@ -18,23 +18,23 @@ const appointmentSchema = new mongoose.Schema({
         type: String,
         default: "booked",
         required: true,
-    },appointmentNote:{
-        type:String,
-        required:false
-    },deleteNote:{
-        type:String,
-        required:false
+    }, appointmentNote: {
+        type: String,
+        required: false
+    }, deleteNote: {
+        type: String,
+        required: false
     },
-    deletedBy:{
-        type:Object
+    deletedBy: {
+        type: Object
     },
-    isDoctorRead:{
-        type:Boolean,
-        default:false
+    isDoctorRead: {
+        type: Boolean,
+        default: false
     },
-    isPatientRead:{
-        type:Boolean,
-        default:true
+    isPatientRead: {
+        type: Boolean,
+        default: true
     }
 
 }, {timestamps: true});

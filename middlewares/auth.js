@@ -18,7 +18,7 @@ module.exports = {
             res.status(403).send({message: "Access denied ! No token"});
         }
     },
-    getToken:(req,res,next)=>{
+    getToken: (req, res, next) => {
         let token = req.get("authorization");
         if (token) {
             token = token.slice(7);

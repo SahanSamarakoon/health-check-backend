@@ -101,12 +101,12 @@ module.exports = {
             res.status(error.status || 401).send({message: error.message})
         }
     },
-    getSuggestedDoctors:async(req,res)=>{
+    getSuggestedDoctors: async (req, res) => {
         const user = req.user;
-        try{
-            const result = await getSuggestedDoctors(user._id,user.history);
+        try {
+            const result = await getSuggestedDoctors(user._id, user.history);
             console.log(result);
-        }catch(error){
+        } catch (error) {
             res.status(error.status || 401).send({message: error.message})
         }
     }

@@ -13,7 +13,7 @@ module.exports = {
             deleteNote: Joi.string().allow("")
         })
         const validation = body.validate(req.body);
-        if (validation.error){
+        if (validation.error) {
             res.status(401).send({message: validation.error.message});
             return;
         }
@@ -23,7 +23,7 @@ module.exports = {
             return;
         }
         try {
-            await removeAppointment(id,deleteNote,req.user);
+            await removeAppointment(id, deleteNote, req.user);
             res.status(201).send({success: 1, message: "appointment removed"})
 
         } catch (error) {

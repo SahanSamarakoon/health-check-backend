@@ -53,13 +53,13 @@ module.exports = {
     },
     deleteTimeslot: async (id) => {
         const slot = await Timeslot.findById(id);
-        if (!slot.availability){
+        if (!slot.availability) {
             throw new Error("Timeslot is already booked. Can't delete");
         }
         await Timeslot.findByIdAndUpdate(id, {archived: true});
     }
     ,
-    getDoctors: async (filter,history) => {
+    getDoctors: async (filter, history) => {
         let newFilter;
         let result;
         if (filter.length == 1 && filter[0] == "") {
@@ -73,14 +73,28 @@ module.exports = {
         }
         const suggested = [];
         const notSuggested = [];
-        if (history){
+        if (history) {
             if (history.length > 0 && history[0] != "") {
                 result.forEach(doctor => {
                     if (history.includes(doctor.field)) {
-                        const updatedDoctor = {_id:doctor._id,name:doctor.name,email:doctor.email,dob:doctor.dob,filed:doctor.field,suggested:true}
+                        const updatedDoctor = {
+                            _id: doctor._id,
+                            name: doctor.name,
+                            email: doctor.email,
+                            dob: doctor.dob,
+                            filed: doctor.field,
+                            suggested: true
+                        }
                         suggested.push(updatedDoctor);
                     } else {
-                        const updatedDoctor = {_id:doctor._id,name:doctor.name,email:doctor.email,dob:doctor.dob,filed:doctor.field,suggested:false}
+                        const updatedDoctor = {
+                            _id: doctor._id,
+                            name: doctor.name,
+                            email: doctor.email,
+                            dob: doctor.dob,
+                            filed: doctor.field,
+                            suggested: false
+                        }
                         notSuggested.push(updatedDoctor);
                     }
                 });
